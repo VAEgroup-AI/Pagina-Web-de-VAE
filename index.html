@@ -55,10 +55,7 @@
             <div class="grid md:grid-cols-12 gap-12 items-center">
                 
                 <div class="md:col-span-5 flex flex-col items-center md:items-start order-2 md:order-1 gap-6">
-                    <div class="relative p-2 bg-white/[0.01] rounded-2xl border border-white/5 shadow-xl">
-                        <img src="LOGO_VAE.jpg" alt="VAE AI Consulting" class="w-full max-w-[180px] h-auto object-contain rounded-xl">
-                    </div>
-                    <div class="relative p-1 bg-white/[0.02] rounded-2xl border border-white/5 shadow-2xl overflow-hidden">
+                    <div class="relative p-1 bg-white/[0.02] rounded-2xl border border-white/5 shadow-2xl overflow-hidden dynamic-image-container">
                         <img src="crecimiento-pyme.jpg" alt="Crecimiento de una PyME" class="w-full max-w-sm h-auto object-contain rounded-xl opacity-90 hover:opacity-100 transition-all duration-300">
                     </div>
                 </div>
@@ -71,9 +68,15 @@
                     <p class="text-lg md:text-xl text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto md:mx-0">
                         Automatizamos tus tareas diarias y unificamos tus planillas para que tomes decisiones seguras que te hagan vender más y ahorrar costos.
                     </p>
-                    <a href="#contacto" class="inline-block bg-[var(--verde-lima)] text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition shadow-lg shadow-[var(--verde-lima)]/20">
-                        Agendá tu asesoramiento gratuito
-                    </a>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6">
+                        <a href="#contacto" class="inline-block bg-[var(--verde-lima)] text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition shadow-lg shadow-[var(--verde-lima)]/20 whitespace-nowrap">
+                            Agendá tu asesoramiento gratuito
+                        </a>
+                        <div class="relative p-2 bg-white/[0.02] rounded-xl border border-white/5 shadow-xl shrink-0">
+                            <img src="LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-12 w-auto object-contain rounded-lg">
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -304,4 +307,80 @@
                 <div>
                     <h3 class="text-4xl font-bold mb-6 italic text-gradient">¿Listo para hacer crecer tu negocio?</h3>
                     <p class="text-gray-500 text-lg mb-10">Contanos qué necesita tu empresa y te ayudamos a encontrar la solución más práctica, económica y humana.</p>
-                    <div class="space-
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 text-white/80">
+                            <i data-lucide="mail" class="text-[var(--verde-lima)]"></i>
+                            <span class="text-sm">grupo.vae.app.developers@gmail.com</span>
+                        </div>
+                        <div class="p-6 glass-card bg-[var(--azul-cobalto)] rounded-2xl border-dashed border-white/10">
+                            <div class="flex items-center gap-3 mb-4 text-[var(--azul-electrico)]">
+                                <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                                <span class="font-bold text-sm uppercase tracking-widest">Próximamente</span>
+                            </div>
+                            <ul class="text-sm text-gray-500 space-y-2">
+                                <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-white/10"></i> Agenda de turnos online</li>
+                                <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-white/10"></i> Sistema de seguimiento de consultas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-10 rounded-3xl">
+                    <form id="contactForm" class="space-y-5">
+                        <input type="text" id="name" placeholder="Tu Nombre" required class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition">
+                        <input type="text" id="company" placeholder="Empresa" class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition">
+                        
+                        <select id="service" required class="w-full p-4 bg-[#0D0F14] border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition appearance-none">
+                            <option value="" disabled selected hidden>Selecciona un servicio</option>
+                            <option value="n8n" class="bg-[#0D0F14] text-white">Tareas Automáticas (Ahorro de Tiempo y Licencias)</option>
+                            <option value="asistentes" class="bg-[#0D0F14] text-white">Mensajes Automáticos por WhatsApp y Web</option>
+                            <option value="mentoria" class="bg-[#0D0F14] text-white">Capacitación y Acompañamiento del Equipo</option>
+                            <option value="opensource" class="bg-[#0D0F14] text-white">Sistemas Propios a Medida</option>
+                            <option value="cloud" class="bg-[#0D0F14] text-white">Guardado Seguro en Internet y Correos Propios</option>
+                            <option value="data" class="bg-[#0D0F14] text-white">Organización de Datos y Predicción de Ventas</option>
+                        </select>
+                        
+                        <textarea id="message" placeholder="¿En qué podemos ayudarte?" rows="4" required class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition"></textarea>
+                        <button type="submit" class="w-full bg-[var(--verde-lima)] text-black py-4 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all shadow-lg shadow-[var(--verde-lima)]/10">Enviar consulta</button>
+                    </form>
+                    <p id="successMsg" class="hidden text-[var(--verde-lima)] text-center mt-4 font-bold">¡Consulta enviada con éxito!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-16 border-t border-white/5 bg-black">
+        <div class="container mx-auto px-6 text-center space-y-6">
+            <div class="flex justify-center transition-all duration-300">
+                <img src="LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-20 w-auto object-contain">
+            </div>
+            <div class="text-gray-600 text-xs tracking-widest uppercase">
+                © Copyrights VAE | Planificación • Sistemas Inteligentes • Datos Ordenados
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5491152627337" target="_blank" class="fixed bottom-8 right-8 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+
+    <script>
+        // INICIALIZACIÓN DE ICONOS LUCIDE
+        lucide.createIcons();
+
+        // LÓGICA DE ENVÍO SEGURO DEL FORMULARIO
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const successElement = document.getElementById('successMsg');
+            successElement.classList.remove('hidden');
+            
+            this.reset();
+            
+            setTimeout(() => {
+                successElement.classList.add('hidden');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
