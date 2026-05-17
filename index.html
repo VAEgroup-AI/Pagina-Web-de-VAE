@@ -37,16 +37,21 @@
 <body>
 
     <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-md border-b border-white/5 px-6 py-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div></div>
-            <div class="flex space-x-8 text-sm font-semibold uppercase tracking-widest text-white/80 items-center">
-                <a href="#inicio" class="hover:text-[var(--verde-lima)] transition">Inicio</a>
-                <a href="#nosotros" class="hover:text-[var(--verde-lima)] transition">Nosotros</a>
-                <a href="#servicios" class="hover:text-[var(--verde-lima)] transition">Servicios</a>
-                <a href="#contacto" class="bg-[var(--verde-lima)] text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition-all">Contacto</a>
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="#contacto" class="hover:opacity-80 transition-opacity cursor-pointer flex items-center">
+                        <img src="LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-14 w-auto object-contain rounded">
+                    </a>
+                </div>
+                
+                <div class="flex space-x-8 text-sm font-semibold uppercase tracking-widest text-white/80 items-center">
+                    <a href="#inicio" class="hover:text-[var(--verde-lima)] transition">Inicio</a>
+                    <a href="#nosotros" class="hover:text-[var(--verde-lima)] transition">Nosotros</a>
+                    <a href="#servicios" class="hover:text-[var(--verde-lima)] transition">Servicios</a>
+                    <a href="#contacto" class="bg-[var(--verde-lima)] text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition-all">Contacto</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <section id="inicio" class="gradient-hero min-h-screen flex items-center pt-20 relative overflow-hidden">
         <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-[var(--azul-electrico)]/10 rounded-full blur-3xl pointer-events-none"></div>
