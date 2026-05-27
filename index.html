@@ -353,7 +353,8 @@
                         <textarea id="message" placeholder="¿En qué podemos ayudarte?" rows="4" required class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition"></textarea>
                         <button type="submit" class="w-full bg-[var(--verde-lima)] text-black py-4 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all shadow-lg shadow-[var(--verde-lima)]/10">Enviar consulta</button>
                     </form>
-                    <p id="successMsg" class="hidden text-[var(--verde-lima)] text-center mt-4 font-bold">¡Consulta enviada con éxito!</p>
+                    <p id="successMsg" class="hidden text-[var(--verde-lima)] text-center mt-4 font-bold">¡Consulta enviada con éxito! Nos contactamos pronto.</p>
+                    <p id="errorMsg"   class="hidden text-red-400 text-center mt-4 font-semibold text-sm"></p>
                 </div>
             </div>
         </div>
@@ -378,18 +379,59 @@
         // INICIALIZACIÓN DE ICONOS LUCIDE
         lucide.createIcons();
 
-        // LÓGICA DE ENVÍO SEGURO DEL FORMULARIO
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        // URL del backend (ajustar si cambia el dominio)
+        const BACKEND_URL = 'https://vapi.emipaz.com.ar';
+
+        // LÓGICA DE ENVÍO DEL FORMULARIO AL BACKEND
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const successElement = document.getElementById('successMsg');
-            successElement.classList.remove('hidden');
-            
-            this.reset();
-            
-            setTimeout(() => {
-                successElement.classList.add('hidden');
-            }, 5000);
+
+            const btn = this.querySelector('button[type="submit"]');
+            const successEl = document.getElementById('successMsg');
+            const errorEl  = document.getElementById('errorMsg');
+
+            // Limpiar mensajes previos
+            successEl.classList.add('hidden');
+            errorEl.classList.add('hidden');
+
+            // Estado de carga
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            const payload = {
+                nombre:     document.getElementById('name').value.trim(),
+                empresa:    document.getElementById('company').value.trim(),
+                servicio:   document.getElementById('service').value,
+                comentario: document.getElementById('message').value.trim()
+            };
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/contacto-vae`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    successEl.classList.remove('hidden');
+                    this.reset();
+                    setTimeout(() => successEl.classList.add('hidden'), 6000);
+                } else {
+                    errorEl.textContent = result.error || 'Ocurrió un error. Por favor intentá de nuevo.';
+                    errorEl.classList.remove('hidden');
+                    setTimeout(() => errorEl.classList.add('hidden'), 8000);
+                }
+            } catch (err) {
+                errorEl.textContent = 'No se pudo conectar con el servidor. Escribinos a grupo.vae.app.developers@gmail.com';
+                errorEl.classList.remove('hidden');
+                setTimeout(() => errorEl.classList.add('hidden'), 8000);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
         });
     </script>
 </body>
