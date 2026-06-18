@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAE | Soluciones Inteligentes y Modernización para Pymes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* PALETA PREMIUM CYBERPUNK */
+            --azul-profundo: #000000;    /* Fondo negro absoluto */
+            --azul-cobalto: #0D0F14;     /* Gris espacial ultra oscuro para tarjetas */
+            --verde-lima: #39FF14;       /* Verde Neón para impactos visuales */
+            --azul-electrico: #00E5FF;   /* Cyan brillante para subtextos e iconos */
+            --blanco-crema: #F1F5F9;     /* Blanco titanio frío para lectura limpia */
+        }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--azul-profundo); color: var(--blanco-crema); margin: 0; scroll-behavior: smooth; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+        .gradient-hero { background: radial-gradient(circle at bottom right, #0F172A 0%, var(--azul-profundo) 100%); }
+        .glass-card { background: rgba(13, 15, 20, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.03); transition: all 0.3s ease; }
+        .glass-card:hover { border-color: var(--verde-lima); box-shadow: 0 0 20px rgba(57, 255, 20, 0.1); }
+        .text-gradient { background: linear-gradient(to right, #FFFFFF, var(--verde-lima)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .icon-container { color: var(--azul-electrico); margin-bottom: 1.5rem; display: inline-block; }
+        
+        /* EFECTO FLIP 3D EN VALORES */
+        .flip-container { perspective: 1000px; height: 180px; }
+        .flip-card { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .flip-container:hover .flip-card, .flip-container:active .flip-card { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 0.75rem; padding: 1.25rem; }
+        .flip-front { background: rgba(13, 15, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.03); }
+        .flip-container:hover .flip-front { border-color: var(--azul-electrico); }
+        .flip-back { background: linear-gradient(135deg, #090D16 0%, var(--azul-profundo) 100%); border: 1px solid var(--azul-electrico); transform: rotateY(180deg); text-align: center; }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-md border-b border-white/5 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            
+            <div class="flex items-center shrink-0">
+                <a href="#contacto" class="hover:opacity-80 transition-opacity cursor-pointer flex items-center">
+                    <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-12 w-auto object-contain rounded">
+                </a>
+            </div>
+
+            <div class="hidden lg:flex flex-1 justify-start pl-12 text-base tracking-wide text-white/60 font-medium italic">
+                ...nos apasiona ayudarte a <span class="text-[var(--verde-lima)] font-semibold not-italic px-1.5">hacer crecer tu negocio</span>...
+            </div>
+            
+            <div class="flex space-x-8 text-sm font-semibold uppercase tracking-widest text-white/80 items-center shrink-0">
+                <a href="#inicio" class="hover:text-[var(--verde-lima)] transition">Inicio</a>
+                <a href="#nosotros" class="hover:text-[var(--verde-lima)] transition">Nosotros</a>
+                <a href="#servicios" class="hover:text-[var(--verde-lima)] transition">Servicios</a>
+                <a href="../corpo/" class="text-[var(--azul-electrico)] hover:text-white transition border border-[var(--azul-electrico)]/30 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wider flex items-center gap-1">🏢 Corpo</a>
+                <a href="#contacto" class="bg-[var(--verde-lima)] text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition-all">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="inicio" class="gradient-hero min-h-screen flex items-center pt-20 relative overflow-hidden">
+        <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-[var(--azul-electrico)]/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-12 gap-12 items-center">
+                
+                <div class="md:col-span-5 flex flex-col items-center md:items-start order-2 md:order-1 gap-6">
+                    <div class="relative p-1 bg-white/[0.02] rounded-2xl border border-white/5 shadow-2xl overflow-hidden dynamic-image-container">
+                        <img src="../crecimiento-pyme.jpg" alt="Crecimiento de una PyME" class="w-full max-w-xl h-auto object-contain rounded-xl opacity-90 hover:opacity-100 transition-all duration-300">
+                    </div>
+                </div>
+                
+                <div class="md:col-span-7 order-1 md:order-2 text-center md:text-left">
+                    <h1 class="text-3xl md:text-5xl font-bold mb-6 italic text-white leading-tight">
+                        En VAE nos dedicamos a <span class="text-white">hacer crecer tu negocio</span> con nuestros <span class="text-[var(--verde-lima)]">Sistemas Inteligentes</span>, <br>
+                        <span class="text-gradient inline-block -mr-10 pr-10 pt-3">y a ayudarte a gestionar eficientemente toda la información de tu Empresa</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                        Automatizamos tus tareas diarias y unificamos tus planillas para que tomes decisiones seguras que te hagan vender más y ahorrar costos.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6">
+                        <a href="#contacto" class="inline-block bg-[var(--verde-lima)] text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition shadow-lg shadow-[var(--verde-lima)]/20 whitespace-nowrap">
+                            Agendá tu asesoramiento gratuito
+                        </a>
+                        <div class="relative p-2 bg-white/[0.02] rounded-xl border border-white/5 shadow-xl shrink-0">
+                            <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-20 w-auto object-contain rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="nosotros" class="py-24 bg-[var(--azul-profundo)] relative">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mb-16">
+                <h2 class="text-[var(--azul-electrico)] text-sm font-bold uppercase tracking-widest mb-4">Sobre Nosotros</h2>
+                <h3 class="text-4xl font-bold mb-8 italic text-white">Trabajo en Equipo, Planificación y Acompañamiento Humano</h3>
+                <div class="space-y-6 text-gray-400 text-lg leading-relaxed">
+                    <p>Somos un equipo con más de 20 años de experiencia ayudando a empresas a crecer mediante tecnología práctica y el desarrollo de los equipos de trabajo. Desde VAE, venimos a hacer que la tecnología trabaje para las personas y para las metas de tu negocio.</p>
+                    <p>Diseñamos soluciones sencillas y lógicas con una mirada práctica, acompañándote a elegir y mantener las herramientas que realmente sirven para el día a día de tu negocio.</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-20">
+                <div class="glass-card bg-[var(--azul-cobalto)] p-10 rounded-3xl border-l-4 border-[var(--azul-electrico)]">
+                    <div class="icon-container"><i data-lucide="target" class="w-10 h-10"></i></div>
+                    <h4 class="text-white text-2xl font-bold mb-4">Nuestra Meta</h4>
+                    <p class="text-gray-400">Acompañamos a dueños y empleados a modernizar su forma de trabajar, usando sistemas inteligentes con un enfoque humano, útil y ordenado.</p>
+                </div>
+                <div class="glass-card bg-[var(--azul-cobalto)] p-10 rounded-3xl border-l-4 border-[var(--verde-lima)]">
+                    <div class="icon-container" style="color: var(--verde-lima);"><i data-lucide="eye" class="w-10 h-10"></i></div>
+                    <h4 class="text-white text-2xl font-bold mb-4">Hacia Dónde Vamos</h4>
+                    <p class="text-gray-400">Ser el apoyo de confianza para la modernización de negocios en la región, logrando que las empresas sean más eficientes, fáciles de manejar y rentables.</p>
+                </div>
+            </div>
+
+            <h3 class="text-3xl font-bold mb-4 text-center text-white">Nuestros Valores</h3>
+            <p class="text-center text-xs text-gray-500 mb-12 uppercase tracking-wider">Desliza o presiona para descubrir nuestro compromiso</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flip-container">
+                    <div class="flip-card">
+                        <div class="flip-front">
+                            <i data-lucide="compass" class="w-8 h-8 mb-3 text-[var(--azul-electrico)]"></i>
+                            <h4 class="font-bold text-lg">Claridad</h4>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-sm text-gray-300">Te mostramos cómo, cuánto, cuándo, por qué y para qué se hace cada cosa. Confianza basada en hechos reales.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-container">
+                    <div class="flip-card">
+                        <div class="flip-front">
+                            <i data-lucide="users" class="w-8 h-8 mb-3 text-[var(--azul-electrico)]"></i>
+                            <h4 class="font-bold text-lg">Cercanía</h4>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-sm text-gray-300">Entendemos tu realidad y hablamos tu mismo idioma. Cada cliente y comercio es único para nosotros.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-container">
+                    <div class="flip-card">
+                        <div class="flip-front">
+                            <i data-lucide="refresh-cw" class="w-8 h-8 mb-3 text-[var(--azul-electrico)]"></i>
+                            <h4 class="font-bold text-lg">Crecimiento</h4>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-sm text-gray-300">Te ayudamos a avanzar,  crecer en forma autónoma. El progreso es un camino compartido.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-container">
+                    <div class="flip-card">
+                        <div class="flip-front">
+                            <i data-lucide="zap" class="w-8 h-8 mb-3 text-[var(--azul-electrico)]"></i>
+                            <h4 class="font-bold text-lg">Simplicidad</h4>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-sm text-gray-300">Soluciones prácticas que funcionan desde el primer día, sin complicaciones ni palabras raras.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-container">
+                    <div class="flip-card">
+                        <div class="flip-front">
+                            <i data-lucide="shield-check" class="w-8 h-8 mb-3 text-[var(--azul-electrico)]"></i>
+                            <h4 class="font-bold text-lg">Independencia</h4>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-sm text-gray-300">Dejamos todo listo para que tu equipo sea independiente y dueño absoluto de sus herramientas de trabajo.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-container">
+                    <div class="flip-card">
+                        <div class="flip-front">
+                            <i data-lucide="bar-chart-3" class="w-8 h-8 mb-3 text-[var(--azul-electrico)]"></i>
+                            <h4 class="font-bold text-lg">Resultados Reales</h4>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-sm text-gray-300">Trabajamos a tu lado para optimizar tus procesos, y para que tu negocio rinda y deje más ganancias.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gradient-to-r from-black via-[#0B0F17] to-black border-y border-white/5">
+        <div class="container mx-auto px-6 text-center">
+            <h4 class="text-2xl md:text-3xl font-light leading-relaxed max-w-4xl mx-auto text-gray-400 italic">
+                "Impulsamos una modernización que <span class="text-[var(--verde-lima)] font-bold">potencia el trabajo de tu gente</span>. Desarrollamos soluciones con sentido, adaptadas a las costumbres y metas de cada empresa."
+            </h4>
+        </div>
+    </section>
+
+    <section id="servicios" class="py-24 bg-[var(--azul-profundo)]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-[var(--verde-lima)] text-sm font-bold uppercase tracking-widest mb-4">Nuestros Servicios</h2>
+                <h3 class="text-4xl font-bold text-white">Soluciones prácticas para tu empresa</h3>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <div class="glass-card bg-[var(--azul-cobalto)] p-8 rounded-3xl flex flex-col justify-between border-b-2 border-white/5">
+                    <div>
+                        <div class="icon-container"><i data-lucide="cpu" class="w-10 h-10"></i></div>
+                        <h4 class="text-xl font-bold mb-2 text-white">Tareas Automáticas (Ahorro de Tiempo y Licencias Caras)</h4>
+                        <p class="text-gray-400 text-sm mb-6">Simplificamos tus tareas diarias conectando tus planillas, sistemas y correos para que funcionen solos.</p>
+                        <ul class="space-y-3 text-sm text-gray-500 mb-8">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Informes de ventas, alertas de stock y avisos automáticos</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Conexión de consultas de clientes directo con tus sistemas de ventas</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Procesos automáticos para recibir clientes nuevos, recordarles pagos y pedirles opinión</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Programas prácticos, fáciles de mantener y preparados para cuando tu empresa crezca</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-white/[0.02] rounded-xl border-l-4 border-[var(--azul-electrico)]">
+                        <p class="text-xs italic text-gray-400">💡 “Automatizar es ayudar a la gente, es darles tiempo para tareas que generen más ganancias.”</p>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-8 rounded-3xl flex flex-col justify-between border-b-2 border-white/5">
+                    <div>
+                        <div class="icon-container"><i data-lucide="message-square" class="w-10 h-10"></i></div>
+                        <h4 class="text-xl font-bold mb-2 text-white">Mensajes Automáticos y Respuestas por WhatsApp (Chatbots)</h4>
+                        <p class="text-gray-300 text-sm mb-6">Sistemas que atienden y responden el WhatsApp o tu web de forma automática, usando los precios y el stock real de tu negocio.</p>
+                        <ul class="space-y-3 text-sm text-gray-500 mb-8">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Atención de consultas de clientes y asistencia al personal las 24 horas</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Respuestas automáticas vinculadas directo a tus listas de precios y catálogos</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Conexión directa con los sistemas digitales más modernos</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Enseñanza a tus empleados para usar y mantener estas herramientas</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-white/[0.02] rounded-xl border-l-4 border-[var(--azul-electrico)]">
+                        <p class="text-xs italic text-gray-400">💡 “Un sistema que responde solo, atiende clientes mientras dormís y asegura tus ventas.”</p>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-8 rounded-3xl flex flex-col justify-between border-b-2 border-white/5">
+                    <div>
+                        <div class="icon-container"><i data-lucide="graduation-cap" class="w-10 h-10"></i></div>
+                        <h4 class="text-xl font-bold mb-2 text-white">Capacitación y Acompañamiento en Nuevas Tecnologías</h4>
+                        <p class="text-gray-400 text-sm mb-6">Te guiamos a vos y a tu equipo de trabajo para dar los primeros pasos en el uso de sistemas inteligentes.</p>
+                        <ul class="space-y-3 text-sm text-gray-400 mb-8">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Explicación sencilla de qué son estas herramientas y cómo te ayudan en el día a día</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Ejemplos reales pensados específicamente para el rubro de tu empresa</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Armado de un plan de mejoras paso a paso según tu presupuesto</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Pruebas rápidas y económicas para ver resultados sin gastar de más</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-white/[0.02] rounded-xl border-l-4 border-[var(--azul-electrico)]">
+                        <p class="text-xs italic text-gray-400">💡 “Modernizar el negocio empieza con una decisión, y se logra estando presentes junto a tu equipo.”</p>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-8 rounded-3xl flex flex-col justify-between border-b-2 border-white/5">
+                    <div>
+                        <div class="icon-container"><i data-lucide="layers" class="w-10 h-10"></i></div>
+                        <h4 class="text-xl font-bold mb-2 text-white">Sistemas Propios Hechos a tu Medida</h4>
+                        <p class="text-gray-400 text-sm mb-6">Programas adaptables que garantizan que el sistema sea 100% de tu empresa, sin depender de otros o de cuotas fijas.</p>
+                        <ul class="space-y-3 text-sm text-gray-400 mb-8">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Fichas digitales de clientes y pantallas con información automática</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Control completo del camino de tus productos, pedidos o envíos</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Gráficos simples en pantalla con las ventas y gastos actualizados al instante</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Enseñanza práctica para que manejes todo de forma totalmente independiente</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-white/[0.02] rounded-xl border-l-4 border-[var(--azul-electrico)]">
+                        <p class="text-xs italic text-gray-400">💡 “El control de tu empresa se logra cuando los sistemas se adaptan a vos, y no vos a ellos.”</p>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-8 rounded-3xl flex flex-col justify-between border-b-2 border-white/5">
+                    <div>
+                        <div class="icon-container"><i data-lucide="cloud" class="w-10 h-10"></i></div>
+                        <h4 class="text-xl font-bold mb-2 text-white">Guardado Seguro en Internet y Sistemas Online</h4>
+                        <p class="text-gray-400 text-sm mb-6">Dejamos tus herramientas funcionando en internet de forma rápida y segura, para que conserves todos tus dato si falla una computadora.</p>
+                        <ul class="space-y-3 text-sm text-gray-400 mb-8">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Soporte para el correo de tu empresa y carpetas compartidas</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Copias de seguridad automáticas para que tu negocio nunca pare pase lo que pase</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Ajuste de gastos informáticos para pagar solo por lo que realmente usás</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-white/[0.02] rounded-xl border-l-4 border-[var(--azul-electrico)]">
+                        <p class="text-xs italic text-gray-400">💡 “Tener tus datos en internet tiene el mismo valor que tenerlos en tu computadora. Es la tranquilidad de que tu información está protegida.”</p>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-8 rounded-3xl flex flex-col justify-between border-b-2 border-white/5">
+                    <div>
+                        <div class="icon-container"><i data-lucide="brain-circuit" class="w-10 h-10"></i></div>
+                        <h4 class="text-xl font-bold mb-2 text-white">Organización Inteligente de tus Datos y Ventas</h4>
+                        <p class="text-gray-400 text-sm mb-6">Ordenamos el historial de tu negocio para ayudarte a calcular cuánto vas a vender y tomar decisiones con números reales.</p>
+                        <ul class="space-y-3 text-sm text-gray-400 mb-8">
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Sistemas que identifican automáticamente qué productos o servicios se venden más</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Ajuste preciso de la forma de responder de tus asistentes virtuales y automáticos</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Limpieza y ordenamiento de planillas de Excel sueltas o bases de datos viejas</li>
+                            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-[var(--verde-lima)] shrink-0"></i> Reportes inteligentes con gráficos claros y directos para el dueño de la empresa</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-white/[0.02] rounded-xl border-l-4 border-[var(--azul-electrico)]">
+                        <p class="text-xs italic text-gray-400">💡 “Armamos soluciones a la medida de tus necesidades: creamos herramientas que entienden el día a día de tu negocio de verdad.”</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-24 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div>
+                    <h3 class="text-4xl font-bold mb-6 italic text-gradient">¿Listo para hacer crecer tu negocio?</h3>
+                    <p class="text-gray-500 text-lg mb-10">Contanos qué necesita tu empresa y te ayudamos a encontrar la solución más práctica, económica y humana.</p>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 text-white/80">
+                            <i data-lucide="mail" class="text-[var(--verde-lima)]"></i>
+                            <span class="text-sm">grupo.vae.app.developers@gmail.com</span>
+                        </div>
+                        <div class="p-6 glass-card bg-[var(--azul-cobalto)] rounded-2xl border-dashed border-white/10">
+                            <div class="flex items-center gap-3 mb-4 text-[var(--azul-electrico)]">
+                                <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                                <span class="font-bold text-sm uppercase tracking-widest">Próximamente</span>
+                            </div>
+                            <ul class="text-sm text-gray-500 space-y-2">
+                                <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-white/10"></i> Agenda de turnos online</li>
+                                <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-white/10"></i> Sistema de seguimiento de consultas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card bg-[var(--azul-cobalto)] p-10 rounded-3xl">
+                    <form id="contactForm" class="space-y-5">
+                        <input type="text" id="name" placeholder="Tu Nombre" required class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition">
+                        <input type="text" id="company" placeholder="Empresa" class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition">
+                        
+                        <select id="service" required class="w-full p-4 bg-[#0D0F14] border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition appearance-none">
+                            <option value="" disabled selected hidden>Selecciona un servicio</option>
+                            <option value="n8n" class="bg-[#0D0F14] text-white">Tareas Automáticas (Ahorro de Tiempo y Licencias)</option>
+                            <option value="asistentes" class="bg-[#0D0F14] text-white">Mensajes Automáticos por WhatsApp y Web</option>
+                            <option value="mentoria" class="bg-[#0D0F14] text-white">Capacitación y Acompañamiento del Equipo</option>
+                            <option value="opensource" class="bg-[#0D0F14] text-white">Sistemas Propios a Medida</option>
+                            <option value="cloud" class="bg-[#0D0F14] text-white">Guardado Seguro en Internet y Correos Propios</option>
+                            <option value="data" class="bg-[#0D0F14] text-white">Organización de Datos y Predicción de Ventas</option>
+                        </select>
+                        
+                        <textarea id="message" placeholder="¿En qué podemos ayudarte?" rows="4" required class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition"></textarea>
+                        <button type="submit" class="w-full bg-[var(--verde-lima)] text-black py-4 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all shadow-lg shadow-[var(--verde-lima)]/10">Enviar consulta</button>
+                    </form>
+                    <p id="successMsg" class="hidden text-[var(--verde-lima)] text-center mt-4 font-bold">¡Consulta enviada con éxito! Nos contactamos pronto.</p>
+                    <p id="errorMsg"   class="hidden text-red-400 text-center mt-4 font-semibold text-sm"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-16 border-t border-white/5 bg-black">
+        <div class="container mx-auto px-6 text-center space-y-6">
+            <div class="flex justify-center transition-all duration-300">
+                <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-20 w-auto object-contain">
+            </div>
+            <div class="text-gray-600 text-xs tracking-widest uppercase">
+                © Copyrights VAE | Planificación • Sistemas Inteligentes • Datos Ordenados
+            </div>
+        </div>
+    </footer-->
+
+    <footer class="py-16 border-t border-white/5 bg-black">
+        <div class="container mx-auto px-6 text-center space-y-6">
+            <div class="flex justify-center transition-all duration-300">
+                <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-20 w-auto object-contain">
+            </div>
+            <div class="text-gray-600 text-xs tracking-widest uppercase">
+                © Copyrights VAE | Planificación • Sistemas Inteligentes • Datos Ordenados
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5491152627337" target="_blank" class="fixed bottom-8 right-8 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+
+    <script>
+        // INICIALIZACIÓN DE ICONOS LUCIDE
+        lucide.createIcons();
+
+        // URL del backend (ajustar si cambia el dominio)
+        const BACKEND_URL = 'https://vapi.emipaz.com.ar';
+
+        // LÓGICA DE ENVÍO DEL FORMULARIO AL BACKEND
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btn = this.querySelector('button[type="submit"]');
+            const successEl = document.getElementById('successMsg');
+            const errorEl  = document.getElementById('errorMsg');
+
+            // Limpiar mensajes previos
+            successEl.classList.add('hidden');
+            errorEl.classList.add('hidden');
+
+            // Estado de carga
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            const payload = {
+                nombre:     document.getElementById('name').value.trim(),
+                empresa:    document.getElementById('company').value.trim(),
+                servicio:   document.getElementById('service').value,
+                comentario: document.getElementById('message').value.trim()
+            };
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/contacto-vae`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    successEl.classList.remove('hidden');
+                    this.reset();
+                    setTimeout(() => successEl.classList.add('hidden'), 6000);
+                } else {
+                    errorEl.textContent = result.error || 'Ocurrió un error. Por favor intentá de nuevo.';
+                    errorEl.classList.remove('hidden');
+                    setTimeout(() => errorEl.classList.add('hidden'), 8000);
+                }
+            } catch (err) {
+                errorEl.textContent = 'No se pudo conectar con el servidor. Escribinos a grupo.vae.app.developers@gmail.com';
+                errorEl.classList.remove('hidden');
+                setTimeout(() => errorEl.classList.add('hidden'), 8000);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+    </script>
+</body>
+</html>

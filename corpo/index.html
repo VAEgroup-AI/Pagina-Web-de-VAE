@@ -38,11 +38,18 @@
 
     <nav class="fixed w-full z-50 bg-black/95 backdrop-blur-md border-b border-white/5 px-6 py-4">
         <div class="container mx-auto flex justify-between items-center">
-            <div></div>
+            
+            <div class="flex items-center shrink-0">
+                <a href="#contacto" class="hover:opacity-80 transition-opacity cursor-pointer flex items-center">
+                    <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-12 w-auto object-contain rounded">
+                </a>
+            </div>
+
             <div class="flex space-x-8 text-sm font-semibold uppercase tracking-widest text-white/80 items-center">
                 <a href="#inicio" class="hover:text-[var(--verde-lima)] transition">Inicio</a>
                 <a href="#nosotros" class="hover:text-[var(--verde-lima)] transition">Nosotros</a>
                 <a href="#servicios" class="hover:text-[var(--verde-lima)] transition">Servicios</a>
+                <a href="../pymes/" class="text-[var(--azul-electrico)] hover:text-white transition border border-[var(--azul-electrico)]/30 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wider flex items-center gap-1">💼 Pymes</a>
                 <a href="#contacto" class="bg-[var(--verde-lima)] text-black px-5 py-2 rounded-full font-bold hover:scale-105 transition-all">Contacto</a>
             </div>
         </div>
@@ -56,7 +63,7 @@
                 
                 <div class="md:col-span-5 flex justify-center md:justify-start order-2 md:order-1">
                     <div class="relative p-2 bg-white/[0.01] rounded-3xl border border-white/5 shadow-2xl">
-                        <img src="LOGO VAE.jpg" alt="VAE AI Consulting" class="w-full max-w-sm md:max-w-md h-auto object-contain rounded-2xl">
+                        <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="w-full max-w-sm md:max-w-md h-auto object-contain rounded-2xl">
                     </div>
                 </div>
                 
@@ -337,7 +344,8 @@
                         <textarea id="message" placeholder="¿En qué podemos ayudarte?" rows="4" required class="w-full p-4 bg-white/5 border border-white/5 rounded-xl text-white outline-none focus:border-[var(--verde-lima)] transition"></textarea>
                         <button type="submit" class="w-full bg-[var(--verde-lima)] text-black py-4 rounded-xl font-bold text-lg hover:scale-[1.02] transition-all shadow-lg shadow-[var(--verde-lima)]/10">Enviar consulta</button>
                     </form>
-                    <p id="successMsg" class="hidden text-[var(--verde-lima)] text-center mt-4 font-bold">¡Consulta enviada con éxito!</p>
+                    <p id="successMsg" class="hidden text-[var(--verde-lima)] text-center mt-4 font-bold">¡Consulta enviada con éxito! Nos contactamos pronto.</p>
+                    <p id="errorMsg"   class="hidden text-red-400 text-center mt-4 font-semibold text-sm"></p>
                 </div>
             </div>
         </div>
@@ -346,7 +354,7 @@
     <footer class="py-16 border-t border-white/5 bg-black">
         <div class="container mx-auto px-6 text-center space-y-6">
             <div class="flex justify-center transition-all duration-300">
-                <img src="LOGO VAE.jpg" alt="VAE AI Consulting" class="h-20 w-auto object-contain">
+                <img src="../LOGO_VAE.jpg" alt="VAE AI Consulting" class="h-20 w-auto object-contain">
             </div>
             <div class="text-gray-600 text-xs tracking-widest uppercase">
                 © Copyrights VAE AI Consulting | Estrategia • IA • Datos
@@ -361,14 +369,60 @@
     <script>
         lucide.createIcons();
 
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        // URL del backend (ajustar si cambia el dominio)
+        const BACKEND_URL = 'https://vapi.emipaz.com.ar';
+
+        // LÓGICA DE ENVÍO DEL FORMULARIO AL BACKEND
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            document.getElementById('successMsg').classList.remove('hidden');
-            this.reset();
-            document.getElementById('service').selectedIndex = 0;
-            setTimeout(() => {
-                document.getElementById('successMsg').classList.add('hidden');
-            }, 5000);
+
+            const btn = this.querySelector('button[type="submit"]');
+            const successEl = document.getElementById('successMsg');
+            const errorEl  = document.getElementById('errorMsg');
+
+            // Limpiar mensajes previos
+            successEl.classList.add('hidden');
+            errorEl.classList.add('hidden');
+
+            // Estado de carga
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            const payload = {
+                nombre:     document.getElementById('name').value.trim(),
+                empresa:    document.getElementById('company').value.trim(),
+                servicio:   document.getElementById('service').value,
+                comentario: document.getElementById('message').value.trim()
+            };
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/contacto-vae`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    successEl.classList.remove('hidden');
+                    this.reset();
+                    document.getElementById('service').selectedIndex = 0;
+                    setTimeout(() => successEl.classList.add('hidden'), 6000);
+                } else {
+                    errorEl.textContent = result.error || 'Ocurrió un error. Por favor intentá de nuevo.';
+                    errorEl.classList.remove('hidden');
+                    setTimeout(() => errorEl.classList.add('hidden'), 8000);
+                }
+            } catch (err) {
+                errorEl.textContent = 'No se pudo conectar con el servidor. Escribinos a grupo.vae.app.developers@gmail.com';
+                errorEl.classList.remove('hidden');
+                setTimeout(() => errorEl.classList.add('hidden'), 8000);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
         });
     </script>
 </body>
